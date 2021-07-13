@@ -5,7 +5,7 @@ I have some experiencie with Svelte and TaiwindCSS My favorite in inplement it t
 
 # The App
 
-- Svelte 3
+- Svelte 3.0
 - TaiwildCSS 2.0
 
 ## About Me
