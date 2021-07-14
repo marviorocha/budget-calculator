@@ -4,5 +4,5 @@
 
 <main class="container mx-auto px-32">
   <h1 class="text-3xl text-gray-800">Hello {name}!</h1>
-  <p />
+  <i class="fas fa-home" />
 </main>
