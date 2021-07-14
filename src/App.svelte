@@ -5,5 +5,7 @@
 
 <Navbar />
 <main class="container mx-auto px-32 mt-5">
+  <Title title="Add Expense" />
+  <Title title="Expense List" />
   <Title />
 </main>
