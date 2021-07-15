@@ -1,10 +1,14 @@
 <script>
   import Title from "./Title.svelte";
-  export let expense = [];
+  import Expense from "./Expense.svelte";
+  export let expenses = [];
 </script>
 
-<div class="main">
-  {#each expense as item}
-    <Title title={item.name} />
+<section>
+  <Title title="List Expense" />
+  {#each expenses as expenses, index}
+    <Expense {...expenses} />
+  {:else}
+    <h1>Current is not have expenses</h1>
   {/each}
-</div>
+</section>
