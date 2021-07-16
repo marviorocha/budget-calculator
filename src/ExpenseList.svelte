@@ -7,8 +7,8 @@
 <section>
   <Title title="List Expense" />
   {#each expenses as expenses, index}
-    <Expense {...expenses} on:remove />
+    <Expense {...expenses} />
   {:else}
-    <h1>Current is not have expenses</h1>
+    <h1 class="text-xl font-bold text-center">Current is not have expenses</h1>
   {/each}
 </section>

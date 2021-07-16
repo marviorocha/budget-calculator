@@ -15,17 +15,21 @@
     remove: removeItem,
   };
 
-  const deleteButton = (event) => {
-     const {id, name} = event.detail;
-     confirm(name)
-     removeItem(id)
-  }
+  const clearExpensesAll = () => {
+    expenses = [];
+  };
   setContext("state", state);
 </script>
 
 <Navbar />
-<main class="container mx-auto px-32 mt-5">
+<main class="container  mx-auto px-32 mt-5">
   <Title title="Add Expense" />
 
-  <ExpenseList {expenses} on:remove={deleteButton} />
+  <ExpenseList {expenses} />
+  <div class="flex justify-center">
+    <button on:click={clearExpensesAll}
+      class="w-2/4  py-2 rounded-md  blue bg-blue-500 hover:bg-blue-800 transition delay-200  text-white my-3"
+      >Clear all expense</button
+    >
+  </div>
 </main>

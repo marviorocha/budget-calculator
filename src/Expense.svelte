@@ -1,5 +1,5 @@
 <script>
-  import { getContext, createEventDispatcher } from "svelte";
+  import { getContext } from "svelte";
 
   export let name = "";
   export let id;
@@ -11,7 +11,7 @@
     displayAmount = !displayAmount;
   };
 
-  const dispatch = createEventDispatcher();
+ 
 </script>
 
 <article
@@ -31,11 +31,9 @@
 
   <div class="expenses-buttons">
     <button><i class="fas px-2 fa-edit text-green-600" /></button>
-    <!-- <button on:click={() => remove(id)}
-      ><i class="fas fa-trash text-red-600" /></button
-    > -->
-    <button on:click={() => dispatch("remove",{id, name: "Remove item of dorom"})}
+    <button on:click={() => remove(id)}
       ><i class="fas fa-trash text-red-600" /></button
     >
+ 
   </div>
 </article>
