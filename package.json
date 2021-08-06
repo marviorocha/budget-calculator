@@ -23,6 +23,8 @@
     "tailwindcss": "^2.2.4"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "@tailwindcss/forms": "^0.3.3",
+    "sirv-cli": "^1.0.0",
+    "validate.js": "^0.13.1"
   }
 }

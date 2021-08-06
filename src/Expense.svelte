@@ -7,11 +7,10 @@
   // export let removeItem;
   let displayAmount = false;
   const { remove } = getContext("state");
+  const { setModify } = getContext("modify");
   const toggleAmount = () => {
     displayAmount = !displayAmount;
   };
-
- 
 </script>
 
 <article
@@ -30,10 +29,11 @@
   </div>
 
   <div class="expenses-buttons">
-    <button><i class="fas px-2 fa-edit text-green-600" /></button>
+    <button on:click={() => setModify(id)}
+      ><i class="fas px-2 fa-edit text-green-600" /></button
+    >
     <button on:click={() => remove(id)}
       ><i class="fas fa-trash text-red-600" /></button
     >
- 
   </div>
 </article>

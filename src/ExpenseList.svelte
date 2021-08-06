@@ -2,6 +2,7 @@
   import Title from "./Title.svelte";
   import Expense from "./Expense.svelte";
   export let expenses = [];
+  
 </script>
 
 <section>
