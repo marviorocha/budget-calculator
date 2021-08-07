@@ -315,12 +315,6 @@ var app = (function () {
         }
     }
 
-    const globals = (typeof window !== 'undefined'
-        ? window
-        : typeof globalThis !== 'undefined'
-            ? globalThis
-            : global);
-
     function get_spread_update(levels, updates) {
         const update = {};
         const to_null_out = {};
@@ -581,6 +575,8 @@ var app = (function () {
     	let button;
     	let i1;
     	let t4;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
@@ -598,22 +594,22 @@ var app = (function () {
     			i1 = element("i");
     			t4 = text(" Add Item");
     			attr_dev(i0, "class", "fas fa-shopping-bag fa-2x text-red-600");
-    			add_location(i0, file$6, 8, 6, 282);
+    			add_location(i0, file$6, 12, 6, 325);
     			attr_dev(span, "class", "ml-3 text-xl");
-    			add_location(span, file$6, 9, 6, 341);
+    			add_location(span, file$6, 13, 6, 384);
     			attr_dev(a, "href", "https://google.com");
     			attr_dev(a, "class", "flex font-medium items-center text-white mb-4 md:mb-0");
-    			add_location(a, file$6, 4, 4, 167);
+    			add_location(a, file$6, 8, 4, 210);
     			attr_dev(nav, "class", "md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center");
-    			add_location(nav, file$6, 11, 4, 406);
+    			add_location(nav, file$6, 15, 4, 449);
     			attr_dev(i1, "class", "fas fa-plus-square px-2");
-    			add_location(i1, file$6, 17, 6, 669);
+    			add_location(i1, file$6, 22, 6, 738);
     			attr_dev(button, "class", "inline-flex items-center bg-blue-800 border-0 py-1 px-3 focus:outline-none hover:bg-blue-700 rounded text-base mt-4 md:mt-0");
-    			add_location(button, file$6, 14, 4, 511);
+    			add_location(button, file$6, 18, 4, 554);
     			attr_dev(div, "class", "container mx-auto flex flex-wrap p-5 px-32 flex-col md:flex-row items-center");
-    			add_location(div, file$6, 1, 2, 65);
+    			add_location(div, file$6, 5, 2, 108);
     			attr_dev(header, "class", "text-gray-100 body-font shadow-md bg-blue-400");
-    			add_location(header, file$6, 0, 0, 0);
+    			add_location(header, file$6, 4, 0, 43);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -631,12 +627,31 @@ var app = (function () {
     			append_dev(div, button);
     			append_dev(button, i1);
     			append_dev(button, t4);
+
+    			if (!mounted) {
+    				dispose = listen_dev(
+    					button,
+    					"click",
+    					function () {
+    						if (is_function(/*formOpen*/ ctx[0])) /*formOpen*/ ctx[0].apply(this, arguments);
+    					},
+    					false,
+    					false,
+    					false
+    				);
+
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(new_ctx, [dirty]) {
+    			ctx = new_ctx;
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(header);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -651,22 +666,37 @@ var app = (function () {
     	return block;
     }
 
-    function instance$6($$self, $$props) {
+    function instance$6($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Navbar", slots, []);
-    	const writable_props = [];
+    	let { formOpen } = $$props;
+    	const writable_props = ["formOpen"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Navbar> was created with unknown prop '${key}'`);
     	});
 
-    	return [];
+    	$$self.$$set = $$props => {
+    		if ("formOpen" in $$props) $$invalidate(0, formOpen = $$props.formOpen);
+    	};
+
+    	$$self.$capture_state = () => ({ formOpen });
+
+    	$$self.$inject_state = $$props => {
+    		if ("formOpen" in $$props) $$invalidate(0, formOpen = $$props.formOpen);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [formOpen];
     }
 
     class Navbar extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, { formOpen: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -674,6 +704,21 @@ var app = (function () {
     			options,
     			id: create_fragment$6.name
     		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*formOpen*/ ctx[0] === undefined && !("formOpen" in props)) {
+    			console.warn("<Navbar> was created without expected prop 'formOpen'");
+    		}
+    	}
+
+    	get formOpen() {
+    		throw new Error("<Navbar>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set formOpen(value) {
+    		throw new Error("<Navbar>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -872,8 +917,8 @@ var app = (function () {
     /* src/Expense.svelte generated by Svelte v3.38.3 */
     const file$3 = "src/Expense.svelte";
 
-    // (26:4) {#if displayAmount}
-    function create_if_block$1(ctx) {
+    // (27:4) {#if displayAmount}
+    function create_if_block$2(ctx) {
     	let h3;
     	let t0;
     	let t1;
@@ -884,7 +929,7 @@ var app = (function () {
     			t0 = text("Amount: $");
     			t1 = text(/*amount*/ ctx[2]);
     			attr_dev(h3, "class", "text-base my-3 text-blue-500");
-    			add_location(h3, file$3, 26, 6, 690);
+    			add_location(h3, file$3, 27, 6, 694);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -901,9 +946,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block$2.name,
     		type: "if",
-    		source: "(26:4) {#if displayAmount}",
+    		source: "(27:4) {#if displayAmount}",
     		ctx
     	});
 
@@ -928,7 +973,7 @@ var app = (function () {
     	let i2;
     	let mounted;
     	let dispose;
-    	let if_block = /*displayAmount*/ ctx[3] && create_if_block$1(ctx);
+    	let if_block = /*displayAmount*/ ctx[3] && create_if_block$2(ctx);
 
     	const block = {
     		c: function create() {
@@ -949,22 +994,22 @@ var app = (function () {
     			button2 = element("button");
     			i2 = element("i");
     			attr_dev(i0, "class", "fas px-1 fa-caret-down text-blue-500");
-    			add_location(i0, file$3, 22, 9, 583);
-    			add_location(button0, file$3, 21, 6, 537);
+    			add_location(i0, file$3, 23, 9, 587);
+    			add_location(button0, file$3, 22, 6, 541);
     			attr_dev(h1, "class", "text-1xl font-bold capitalize");
-    			add_location(h1, file$3, 19, 4, 475);
+    			add_location(h1, file$3, 20, 4, 479);
     			attr_dev(div0, "class", "expenses-info");
-    			add_location(div0, file$3, 18, 2, 443);
+    			add_location(div0, file$3, 19, 2, 447);
     			attr_dev(i1, "class", "fas px-2 fa-edit text-green-600");
-    			add_location(i1, file$3, 32, 7, 857);
-    			add_location(button1, file$3, 31, 4, 811);
+    			add_location(i1, file$3, 33, 7, 868);
+    			add_location(button1, file$3, 32, 4, 815);
     			attr_dev(i2, "class", "fas fa-trash text-red-600");
-    			add_location(i2, file$3, 35, 7, 964);
-    			add_location(button2, file$3, 34, 4, 921);
+    			add_location(i2, file$3, 36, 7, 975);
+    			add_location(button2, file$3, 35, 4, 932);
     			attr_dev(div1, "class", "expenses-buttons");
-    			add_location(div1, file$3, 30, 2, 776);
+    			add_location(div1, file$3, 31, 2, 780);
     			attr_dev(article, "class", "p-3 flex justify-between items-center bg-gray-100 rounded-md my-2 shadow-sm ");
-    			add_location(article, file$3, 15, 0, 343);
+    			add_location(article, file$3, 16, 0, 347);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1004,7 +1049,7 @@ var app = (function () {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block$1(ctx);
+    					if_block = create_if_block$2(ctx);
     					if_block.c();
     					if_block.m(div0, null);
     				}
@@ -1045,7 +1090,7 @@ var app = (function () {
     	let displayAmount = false;
 
     	const { remove } = getContext("state");
-    	const { setModify } = getContext("modify");
+    	const setModifyExpense = getContext("modify");
 
     	const toggleAmount = () => {
     		$$invalidate(3, displayAmount = !displayAmount);
@@ -1057,7 +1102,7 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Expense> was created with unknown prop '${key}'`);
     	});
 
-    	const click_handler = () => setModify(id);
+    	const click_handler = () => setModifyExpense(id);
     	const click_handler_1 = () => remove(id);
 
     	$$self.$$set = $$props => {
@@ -1073,7 +1118,7 @@ var app = (function () {
     		amount,
     		displayAmount,
     		remove,
-    		setModify,
+    		setModifyExpense,
     		toggleAmount
     	});
 
@@ -1094,7 +1139,7 @@ var app = (function () {
     		amount,
     		displayAmount,
     		remove,
-    		setModify,
+    		setModifyExpense,
     		toggleAmount,
     		click_handler,
     		click_handler_1
@@ -1157,7 +1202,7 @@ var app = (function () {
     }
 
     // (12:2) {:else}
-    function create_else_block(ctx) {
+    function create_else_block$1(ctx) {
     	let h1;
 
     	const block = {
@@ -1177,7 +1222,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block.name,
+    		id: create_else_block$1.name,
     		type: "else",
     		source: "(12:2) {:else}",
     		ctx
@@ -1265,7 +1310,7 @@ var app = (function () {
     	let each_1_else = null;
 
     	if (!each_value.length) {
-    		each_1_else = create_else_block(ctx);
+    		each_1_else = create_else_block$1(ctx);
     	}
 
     	const block = {
@@ -1336,7 +1381,7 @@ var app = (function () {
     						each_1_else = null;
     					}
     				} else if (!each_1_else) {
-    					each_1_else = create_else_block(ctx);
+    					each_1_else = create_else_block$1(ctx);
     					each_1_else.c();
     					each_1_else.m(section, null);
     				}
@@ -2716,8 +2761,8 @@ var app = (function () {
     /* src/ExpenseForm.svelte generated by Svelte v3.38.3 */
     const file$1 = "src/ExpenseForm.svelte";
 
-    // (38:6) {#if emptyValue}
-    function create_if_block(ctx) {
+    // (49:6) {#if emptyValue}
+    function create_if_block_1(ctx) {
     	let p;
 
     	const block = {
@@ -2725,7 +2770,7 @@ var app = (function () {
     			p = element("p");
     			p.textContent = "Please fill all field this form";
     			attr_dev(p, "class", "text-red-500 mx-auto py-3");
-    			add_location(p, file$1, 38, 8, 1185);
+    			add_location(p, file$1, 49, 8, 1392);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -2737,9 +2782,63 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block.name,
+    		id: create_if_block_1.name,
     		type: "if",
-    		source: "(38:6) {#if emptyValue}",
+    		source: "(49:6) {#if emptyValue}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (57:39) {:else}
+    function create_else_block(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Add Expense");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(57:39) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (57:9) {#if isEditing}
+    function create_if_block$1(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Edite Expense");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(57:9) {#if isEditing}",
     		ctx
     	});
 
@@ -2775,7 +2874,15 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	let if_block = /*emptyValue*/ ctx[2] && create_if_block(ctx);
+    	let if_block0 = /*emptyValue*/ ctx[4] && create_if_block_1(ctx);
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*isEditing*/ ctx[2]) return create_if_block$1;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block1 = current_block_type(ctx);
 
     	const block = {
     		c: function create() {
@@ -2798,39 +2905,39 @@ var app = (function () {
     			t7 = space();
     			input1 = element("input");
     			t8 = space();
-    			if (if_block) if_block.c();
+    			if (if_block0) if_block0.c();
     			t9 = space();
     			button1 = element("button");
-    			button1.textContent = "Add Expense";
+    			if_block1.c();
     			attr_dev(i, "class", "fas fa-times");
-    			add_location(i, file$1, 19, 6, 546);
+    			add_location(i, file$1, 30, 6, 753);
     			attr_dev(button0, "class", "focus:outline-none text-red-600 float-right");
-    			add_location(button0, file$1, 18, 4, 479);
+    			add_location(button0, file$1, 26, 4, 648);
     			attr_dev(label0, "for", "name");
     			attr_dev(label0, "class", "font-bold");
-    			add_location(label0, file$1, 23, 6, 665);
+    			add_location(label0, file$1, 34, 6, 872);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "title");
     			attr_dev(input0, "class", "px-1 py-1 focus:outline-none border-b-2 border-0 mb-3 focus:ring-0 bg-gray-100 w-full");
-    			add_location(input0, file$1, 24, 6, 722);
+    			add_location(input0, file$1, 35, 6, 929);
     			attr_dev(label1, "for", "name");
     			attr_dev(label1, "class", "font-bold");
-    			add_location(label1, file$1, 30, 6, 914);
+    			add_location(label1, file$1, 41, 6, 1121);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "name", "amount");
     			attr_dev(input1, "class", "px-1 py-1 focus:outline-none border-b-2 border-0 bg-gray-100 focus:ring-0 w-full");
-    			add_location(input1, file$1, 31, 6, 971);
+    			add_location(input1, file$1, 42, 6, 1178);
     			attr_dev(button1, "type", "submit");
     			attr_dev(button1, "class", "w-auto py-2  rounded-md border-2 blue uppercase border-blue-600 bg-write hover:bg-blue-500 hover:text-white transition delay-200  text-blue-600 my-3 svelte-dcidp");
-    			toggle_class(button1, "disable", /*emptyValue*/ ctx[2]);
-    			add_location(button1, file$1, 40, 6, 1276);
+    			toggle_class(button1, "disable", /*emptyValue*/ ctx[4]);
+    			add_location(button1, file$1, 52, 6, 1484);
     			attr_dev(div, "class", "flex flex-col");
-    			add_location(div, file$1, 22, 4, 631);
+    			add_location(div, file$1, 33, 4, 838);
     			attr_dev(form, "action", "");
     			attr_dev(form, "class", "my-5 px-5");
-    			add_location(form, file$1, 17, 2, 400);
+    			add_location(form, file$1, 25, 2, 569);
     			attr_dev(section, "class", "bg-gray-100 shadow-lg rounded-md my-2 block mx-auto w-1/3 py-3  shadow-sm");
-    			add_location(section, file$1, 14, 0, 303);
+    			add_location(section, file$1, 22, 0, 472);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2855,22 +2962,35 @@ var app = (function () {
     			append_dev(div, input1);
     			set_input_value(input1, /*amount*/ ctx[1]);
     			append_dev(div, t8);
-    			if (if_block) if_block.m(div, null);
+    			if (if_block0) if_block0.m(div, null);
     			append_dev(div, t9);
     			append_dev(div, button1);
+    			if_block1.m(button1, null);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[5]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[6]),
-    					listen_dev(form, "submit", prevent_default(/*handleSubmit*/ ctx[3]), false, true, false)
+    					listen_dev(
+    						button0,
+    						"click",
+    						function () {
+    							if (is_function(/*formClose*/ ctx[3])) /*formClose*/ ctx[3].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[8]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[9]),
+    					listen_dev(form, "submit", prevent_default(/*handleSubmit*/ ctx[5]), false, true, false)
     				];
 
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, [dirty]) {
+    		p: function update(new_ctx, [dirty]) {
+    			ctx = new_ctx;
+
     			if (dirty & /*title*/ 1 && input0.value !== /*title*/ ctx[0]) {
     				set_input_value(input0, /*title*/ ctx[0]);
     			}
@@ -2879,19 +2999,29 @@ var app = (function () {
     				set_input_value(input1, /*amount*/ ctx[1]);
     			}
 
-    			if (/*emptyValue*/ ctx[2]) {
-    				if (if_block) ; else {
-    					if_block = create_if_block(ctx);
-    					if_block.c();
-    					if_block.m(div, t9);
+    			if (/*emptyValue*/ ctx[4]) {
+    				if (if_block0) ; else {
+    					if_block0 = create_if_block_1(ctx);
+    					if_block0.c();
+    					if_block0.m(div, t9);
     				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
     			}
 
-    			if (dirty & /*emptyValue*/ 4) {
-    				toggle_class(button1, "disable", /*emptyValue*/ ctx[2]);
+    			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+    				if_block1.d(1);
+    				if_block1 = current_block_type(ctx);
+
+    				if (if_block1) {
+    					if_block1.c();
+    					if_block1.m(button1, null);
+    				}
+    			}
+
+    			if (dirty & /*emptyValue*/ 16) {
+    				toggle_class(button1, "disable", /*emptyValue*/ ctx[4]);
     			}
     		},
     		i: function intro(local) {
@@ -2906,7 +3036,8 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(section);
     			destroy_component(title_1);
-    			if (if_block) if_block.d();
+    			if (if_block0) if_block0.d();
+    			if_block1.d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -2927,17 +3058,25 @@ var app = (function () {
     	let emptyValue;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("ExpenseForm", slots, []);
-    	let title = "";
-    	let amount = null;
+    	let { title = "" } = $$props;
+    	let { amount = null } = $$props;
+    	let { isEditing } = $$props;
+    	let { formClose } = $$props;
+    	let { editExpense } = $$props;
     	let { addExpense } = $$props;
 
     	const handleSubmit = () => {
-    		addExpense({ title, amount });
+    		if (isEditing) {
+    			editExpense({ title, amount });
+    		} else {
+    			addExpense({ title, amount });
+    		}
+
     		$$invalidate(0, title = "");
     		$$invalidate(1, amount = null);
     	};
 
-    	const writable_props = ["addExpense"];
+    	const writable_props = ["title", "amount", "isEditing", "formClose", "editExpense", "addExpense"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<ExpenseForm> was created with unknown prop '${key}'`);
@@ -2954,7 +3093,12 @@ var app = (function () {
     	}
 
     	$$self.$$set = $$props => {
-    		if ("addExpense" in $$props) $$invalidate(4, addExpense = $$props.addExpense);
+    		if ("title" in $$props) $$invalidate(0, title = $$props.title);
+    		if ("amount" in $$props) $$invalidate(1, amount = $$props.amount);
+    		if ("isEditing" in $$props) $$invalidate(2, isEditing = $$props.isEditing);
+    		if ("formClose" in $$props) $$invalidate(3, formClose = $$props.formClose);
+    		if ("editExpense" in $$props) $$invalidate(6, editExpense = $$props.editExpense);
+    		if ("addExpense" in $$props) $$invalidate(7, addExpense = $$props.addExpense);
     	};
 
     	$$self.$capture_state = () => ({
@@ -2962,6 +3106,9 @@ var app = (function () {
     		Title,
     		title,
     		amount,
+    		isEditing,
+    		formClose,
+    		editExpense,
     		addExpense,
     		handleSubmit,
     		emptyValue
@@ -2970,8 +3117,11 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ("title" in $$props) $$invalidate(0, title = $$props.title);
     		if ("amount" in $$props) $$invalidate(1, amount = $$props.amount);
-    		if ("addExpense" in $$props) $$invalidate(4, addExpense = $$props.addExpense);
-    		if ("emptyValue" in $$props) $$invalidate(2, emptyValue = $$props.emptyValue);
+    		if ("isEditing" in $$props) $$invalidate(2, isEditing = $$props.isEditing);
+    		if ("formClose" in $$props) $$invalidate(3, formClose = $$props.formClose);
+    		if ("editExpense" in $$props) $$invalidate(6, editExpense = $$props.editExpense);
+    		if ("addExpense" in $$props) $$invalidate(7, addExpense = $$props.addExpense);
+    		if ("emptyValue" in $$props) $$invalidate(4, emptyValue = $$props.emptyValue);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2980,15 +3130,18 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*title, amount*/ 3) {
-    			$$invalidate(2, emptyValue = !title || !amount);
+    			$$invalidate(4, emptyValue = !title || !amount);
     		}
     	};
 
     	return [
     		title,
     		amount,
+    		isEditing,
+    		formClose,
     		emptyValue,
     		handleSubmit,
+    		editExpense,
     		addExpense,
     		input0_input_handler,
     		input1_input_handler
@@ -2998,7 +3151,15 @@ var app = (function () {
     class ExpenseForm extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { addExpense: 4 });
+
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+    			title: 0,
+    			amount: 1,
+    			isEditing: 2,
+    			formClose: 3,
+    			editExpense: 6,
+    			addExpense: 7
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -3010,9 +3171,61 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*addExpense*/ ctx[4] === undefined && !("addExpense" in props)) {
+    		if (/*isEditing*/ ctx[2] === undefined && !("isEditing" in props)) {
+    			console.warn("<ExpenseForm> was created without expected prop 'isEditing'");
+    		}
+
+    		if (/*formClose*/ ctx[3] === undefined && !("formClose" in props)) {
+    			console.warn("<ExpenseForm> was created without expected prop 'formClose'");
+    		}
+
+    		if (/*editExpense*/ ctx[6] === undefined && !("editExpense" in props)) {
+    			console.warn("<ExpenseForm> was created without expected prop 'editExpense'");
+    		}
+
+    		if (/*addExpense*/ ctx[7] === undefined && !("addExpense" in props)) {
     			console.warn("<ExpenseForm> was created without expected prop 'addExpense'");
     		}
+    	}
+
+    	get title() {
+    		throw new Error("<ExpenseForm>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set title(value) {
+    		throw new Error("<ExpenseForm>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get amount() {
+    		throw new Error("<ExpenseForm>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set amount(value) {
+    		throw new Error("<ExpenseForm>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get isEditing() {
+    		throw new Error("<ExpenseForm>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set isEditing(value) {
+    		throw new Error("<ExpenseForm>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get formClose() {
+    		throw new Error("<ExpenseForm>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set formClose(value) {
+    		throw new Error("<ExpenseForm>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get editExpense() {
+    		throw new Error("<ExpenseForm>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set editExpense(value) {
+    		throw new Error("<ExpenseForm>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get addExpense() {
@@ -3025,15 +3238,69 @@ var app = (function () {
     }
 
     /* src/App.svelte generated by Svelte v3.38.3 */
-
-    const { console: console_1 } = globals;
     const file = "src/App.svelte";
+
+    // (86:2) {#if isShowForm}
+    function create_if_block(ctx) {
+    	let expenseform;
+    	let current;
+
+    	expenseform = new ExpenseForm({
+    			props: {
+    				addExpense: /*addExpense*/ ctx[8],
+    				editExpense: /*editExpense*/ ctx[9],
+    				title: /*setName*/ ctx[0],
+    				amount: /*setAmount*/ ctx[1],
+    				isEditing: /*isEditing*/ ctx[4],
+    				formClose: /*formClose*/ ctx[7]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(expenseform.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(expenseform, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const expenseform_changes = {};
+    			if (dirty & /*setName*/ 1) expenseform_changes.title = /*setName*/ ctx[0];
+    			if (dirty & /*setAmount*/ 2) expenseform_changes.amount = /*setAmount*/ ctx[1];
+    			if (dirty & /*isEditing*/ 16) expenseform_changes.isEditing = /*isEditing*/ ctx[4];
+    			expenseform.$set(expenseform_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(expenseform.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(expenseform.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(expenseform, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(86:2) {#if isShowForm}",
+    		ctx
+    	});
+
+    	return block;
+    }
 
     function create_fragment(ctx) {
     	let navbar;
     	let t0;
     	let main;
-    	let expenseform;
     	let t1;
     	let total_1;
     	let t2;
@@ -3046,15 +3313,16 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
-    	navbar = new Navbar({ $$inline: true });
 
-    	expenseform = new ExpenseForm({
-    			props: { addExpense: /*addExpense*/ ctx[2] },
+    	navbar = new Navbar({
+    			props: { formOpen: /*formOpen*/ ctx[6] },
     			$$inline: true
     		});
 
+    	let if_block = /*isShowForm*/ ctx[3] && create_if_block(ctx);
+
     	total_1 = new Total({
-    			props: { total: /*total*/ ctx[1] },
+    			props: { total: /*total*/ ctx[5] },
     			$$inline: true
     		});
 
@@ -3064,7 +3332,7 @@ var app = (function () {
     		});
 
     	expenselist = new ExpenseList({
-    			props: { expenses: /*expenses*/ ctx[0] },
+    			props: { expenses: /*expenses*/ ctx[2] },
     			$$inline: true
     		});
 
@@ -3073,7 +3341,7 @@ var app = (function () {
     			create_component(navbar.$$.fragment);
     			t0 = space();
     			main = element("main");
-    			create_component(expenseform.$$.fragment);
+    			if (if_block) if_block.c();
     			t1 = space();
     			create_component(total_1.$$.fragment);
     			t2 = space();
@@ -3085,11 +3353,11 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Clear all expense";
     			attr_dev(button, "class", "w-2/4  py-2 rounded-md  blue bg-blue-500 hover:bg-blue-800 transition delay-200  text-white my-3");
-    			add_location(button, file, 64, 4, 1438);
+    			add_location(button, file, 102, 4, 2197);
     			attr_dev(div, "class", "flex justify-center");
-    			add_location(div, file, 63, 2, 1400);
+    			add_location(div, file, 101, 2, 2159);
     			attr_dev(main, "class", "container  mx-auto px-32 mt-5");
-    			add_location(main, file, 54, 0, 1237);
+    			add_location(main, file, 84, 0, 1855);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3098,7 +3366,7 @@ var app = (function () {
     			mount_component(navbar, target, anchor);
     			insert_dev(target, t0, anchor);
     			insert_dev(target, main, anchor);
-    			mount_component(expenseform, main, null);
+    			if (if_block) if_block.m(main, null);
     			append_dev(main, t1);
     			mount_component(total_1, main, null);
     			append_dev(main, t2);
@@ -3111,22 +3379,45 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*clearExpensesAll*/ ctx[3], false, false, false);
+    				dispose = listen_dev(button, "click", /*clearExpensesAll*/ ctx[10], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
+    			if (/*isShowForm*/ ctx[3]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*isShowForm*/ 8) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(main, t1);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+
     			const total_1_changes = {};
-    			if (dirty & /*total*/ 2) total_1_changes.total = /*total*/ ctx[1];
+    			if (dirty & /*total*/ 32) total_1_changes.total = /*total*/ ctx[5];
     			total_1.$set(total_1_changes);
     			const expenselist_changes = {};
-    			if (dirty & /*expenses*/ 1) expenselist_changes.expenses = /*expenses*/ ctx[0];
+    			if (dirty & /*expenses*/ 4) expenselist_changes.expenses = /*expenses*/ ctx[2];
     			expenselist.$set(expenselist_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(navbar.$$.fragment, local);
-    			transition_in(expenseform.$$.fragment, local);
+    			transition_in(if_block);
     			transition_in(total_1.$$.fragment, local);
     			transition_in(title.$$.fragment, local);
     			transition_in(expenselist.$$.fragment, local);
@@ -3134,7 +3425,7 @@ var app = (function () {
     		},
     		o: function outro(local) {
     			transition_out(navbar.$$.fragment, local);
-    			transition_out(expenseform.$$.fragment, local);
+    			transition_out(if_block);
     			transition_out(total_1.$$.fragment, local);
     			transition_out(title.$$.fragment, local);
     			transition_out(expenselist.$$.fragment, local);
@@ -3144,7 +3435,7 @@ var app = (function () {
     			destroy_component(navbar, detaching);
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(main);
-    			destroy_component(expenseform);
+    			if (if_block) if_block.d();
     			destroy_component(total_1);
     			destroy_component(title);
     			destroy_component(expenselist);
@@ -3165,10 +3456,27 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
+    	let isEditing;
     	let total;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
     	let expenses = [...ExpenseDate];
+    	let isShowForm = false;
+    	let { setId = null } = $$props;
+    	let { setName = "" } = $$props;
+    	let { setAmount = null } = $$props;
+
+    	// Show form
+    	const formOpen = () => {
+    		$$invalidate(3, isShowForm = true);
+    	};
+
+    	const formClose = () => {
+    		$$invalidate(3, isShowForm = false);
+    		$$invalidate(11, setId = null);
+    		$$invalidate(0, setName = "");
+    		$$invalidate(1, setAmount = null);
+    	};
 
     	// Add Expense
     	const addExpense = ({ title, amount }) => {
@@ -3178,20 +3486,33 @@ var app = (function () {
     			amount
     		};
 
-    		$$invalidate(0, expenses = [expense, ...expenses]);
+    		$$invalidate(2, expenses = [expense, ...expenses]);
     	};
 
     	// Modified Expense
     	const modifiedExpense = id => {
     		let expense = expenses.find(item => item.id === id);
-    		console.log(expense);
-    		setId = expense.id;
-    		setTitle = expense.title;
-    		setAmount = expense.amount;
+    		$$invalidate(11, setId = expense.id);
+    		$$invalidate(0, setName = expense.name);
+    		$$invalidate(1, setAmount = expense.amount);
+    		formOpen();
+    	};
+
+    	// Edit expense
+    	const editExpense = ({ title, amount }) => {
+    		$$invalidate(2, expenses = expenses.map(item => {
+    			return item.id === setId
+    			? { ...item, name: title, amount }
+    			: { ...item };
+    		}));
+
+    		$$invalidate(11, setId = null);
+    		$$invalidate(0, setName = "");
+    		$$invalidate(1, setAmount = null);
     	};
 
     	const removeItem = id => {
-    		$$invalidate(0, expenses = expenses.filter(item => item.id !== id));
+    		$$invalidate(2, expenses = expenses.filter(item => item.id !== id));
     	};
 
     	const state = {
@@ -3200,16 +3521,22 @@ var app = (function () {
     	};
 
     	const clearExpensesAll = () => {
-    		$$invalidate(0, expenses = []);
+    		$$invalidate(2, expenses = []);
     	};
 
     	setContext("state", state);
     	setContext("modify", modifiedExpense);
-    	const writable_props = [];
+    	const writable_props = ["setId", "setName", "setAmount"];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<App> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
     	});
+
+    	$$self.$$set = $$props => {
+    		if ("setId" in $$props) $$invalidate(11, setId = $$props.setId);
+    		if ("setName" in $$props) $$invalidate(0, setName = $$props.setName);
+    		if ("setAmount" in $$props) $$invalidate(1, setAmount = $$props.setAmount);
+    	};
 
     	$$self.$capture_state = () => ({
     		setContext,
@@ -3220,17 +3547,30 @@ var app = (function () {
     		ExpenseDate,
     		ExpenseForm,
     		expenses,
+    		isShowForm,
+    		setId,
+    		setName,
+    		setAmount,
+    		formOpen,
+    		formClose,
     		addExpense,
     		modifiedExpense,
+    		editExpense,
     		removeItem,
     		state,
     		clearExpensesAll,
+    		isEditing,
     		total
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("expenses" in $$props) $$invalidate(0, expenses = $$props.expenses);
-    		if ("total" in $$props) $$invalidate(1, total = $$props.total);
+    		if ("expenses" in $$props) $$invalidate(2, expenses = $$props.expenses);
+    		if ("isShowForm" in $$props) $$invalidate(3, isShowForm = $$props.isShowForm);
+    		if ("setId" in $$props) $$invalidate(11, setId = $$props.setId);
+    		if ("setName" in $$props) $$invalidate(0, setName = $$props.setName);
+    		if ("setAmount" in $$props) $$invalidate(1, setAmount = $$props.setAmount);
+    		if ("isEditing" in $$props) $$invalidate(4, isEditing = $$props.isEditing);
+    		if ("total" in $$props) $$invalidate(5, total = $$props.total);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -3238,9 +3578,13 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*expenses*/ 1) {
+    		if ($$self.$$.dirty & /*setId*/ 2048) {
     			// reactive
-    			$$invalidate(1, total = expenses.reduce(
+    			$$invalidate(4, isEditing = setId ? true : false);
+    		}
+
+    		if ($$self.$$.dirty & /*expenses*/ 4) {
+    			$$invalidate(5, total = expenses.reduce(
     				(acumulate, curr) => {
     					return acumulate += curr.amount;
     				},
@@ -3249,13 +3593,26 @@ var app = (function () {
     		}
     	};
 
-    	return [expenses, total, addExpense, clearExpensesAll];
+    	return [
+    		setName,
+    		setAmount,
+    		expenses,
+    		isShowForm,
+    		isEditing,
+    		total,
+    		formOpen,
+    		formClose,
+    		addExpense,
+    		editExpense,
+    		clearExpensesAll,
+    		setId
+    	];
     }
 
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, {});
+    		init(this, options, instance, create_fragment, safe_not_equal, { setId: 11, setName: 0, setAmount: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -3263,6 +3620,30 @@ var app = (function () {
     			options,
     			id: create_fragment.name
     		});
+    	}
+
+    	get setId() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set setId(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get setName() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set setName(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get setAmount() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set setAmount(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 

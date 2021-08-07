@@ -4,10 +4,11 @@
   export let name = "";
   export let id;
   export let amount = 0;
+
   // export let removeItem;
   let displayAmount = false;
   const { remove } = getContext("state");
-  const { setModify } = getContext("modify");
+  const setModifyExpense = getContext("modify");
   const toggleAmount = () => {
     displayAmount = !displayAmount;
   };
@@ -29,7 +30,7 @@
   </div>
 
   <div class="expenses-buttons">
-    <button on:click={() => setModify(id)}
+    <button on:click={() => setModifyExpense(id)}
       ><i class="fas px-2 fa-edit text-green-600" /></button
     >
     <button on:click={() => remove(id)}

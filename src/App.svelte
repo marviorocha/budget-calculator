@@ -9,11 +9,30 @@
 
   // variable
   let expenses = [...ExpenseDate];
+  let isShowForm = false;
 
+  // Variable Editing
+  export let setId = null;
+  export let setName = "";
+  export let setAmount = null;
   // reactive
+  $: isEditing = setId ? true : false;
   $: total = expenses.reduce((acumulate, curr) => {
     return (acumulate += curr.amount);
   }, 0);
+
+  // Show form
+
+  const formOpen = () => {
+    isShowForm = true;
+  };
+
+  const formClose = () => {
+    isShowForm = false;
+    setId = null;
+    setName = "";
+    setAmount = null;
+  };
 
   // Add Expense
   const addExpense = ({ title, amount }) => {
@@ -28,10 +47,21 @@
   // Modified Expense
   const modifiedExpense = (id) => {
     let expense = expenses.find((item) => item.id === id);
-    console.log(expense);
     setId = expense.id;
-    setTitle = expense.title;
+    setName = expense.name;
     setAmount = expense.amount;
+    formOpen();
+  };
+
+  // Edit expense
+
+  const editExpense = ({ title, amount }) => {
+    expenses = expenses.map((item) => {
+      return item.id === setId ? { ...item, name: title, amount } : { ...item };
+    });
+    setId = null;
+    setName = "";
+    setAmount = null;
   };
 
   const removeItem = (id) => {
@@ -51,10 +81,18 @@
   setContext("modify", modifiedExpense);
 </script>
 
-<Navbar />
+<Navbar {formOpen} />
 <main class="container  mx-auto px-32 mt-5">
-  <ExpenseForm {addExpense} />
-
+  {#if isShowForm}
+    <ExpenseForm
+      {addExpense}
+      {editExpense}
+      title={setName}
+      amount={setAmount}
+      {isEditing}
+      {formClose}
+    />
+  {/if}
   <Total {total} />
 
   <Title title="Add Expense" />

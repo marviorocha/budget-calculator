@@ -1,12 +1,20 @@
 <script>
   import Validate from "validate.js";
   import Title from "./Title.svelte";
-  let title = "";
-  let amount = null;
+  export let title = "";
+  export let amount = null;
+  export let isEditing;
+  export let formClose;
+  export let editExpense;
   $: emptyValue = !title || !amount;
   export let addExpense;
   const handleSubmit = () => {
-    addExpense({ title, amount });
+    if (isEditing) {
+      editExpense({ title, amount });
+    } else {
+      addExpense({ title, amount });
+    }
+
     title = "";
     amount = null;
   };
@@ -16,7 +24,10 @@
   class="bg-gray-100 shadow-lg rounded-md my-2 block mx-auto w-1/3 py-3  shadow-sm"
 >
   <form action="" class="my-5 px-5" on:submit|preventDefault={handleSubmit}>
-    <button class="focus:outline-none text-red-600 float-right">
+    <button
+      on:click={formClose}
+      class="focus:outline-none text-red-600 float-right"
+    >
       <i class="fas fa-times" /> Close</button
     >
     <Title title="Add Expense" />
@@ -38,11 +49,12 @@
       {#if emptyValue}
         <p class="text-red-500 mx-auto py-3">Please fill all field this form</p>
       {/if}
+
       <button
         type="submit"
         class:disable={emptyValue}
         class="w-auto py-2  rounded-md border-2 blue uppercase border-blue-600 bg-write hover:bg-blue-500 hover:text-white transition delay-200  text-blue-600 my-3"
-        >Add Expense</button
+        >{#if isEditing} Edite Expense {:else} Add Expense {/if}</button
       >
     </div>
   </form>
