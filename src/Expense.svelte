@@ -3,7 +3,7 @@
 
   export let name = "";
   export let id;
-  export let amount = 0;
+  export let amount = null;
 
   // export let removeItem;
   let displayAmount = false;
@@ -25,7 +25,7 @@
       >
     </h1>
     {#if displayAmount}
-      <h3 class="text-base my-3 text-blue-500">Amount: ${amount}</h3>
+      <h3 class="text-base my-3 text-blue-500">Amount: {amount}</h3>
     {/if}
   </div>
 

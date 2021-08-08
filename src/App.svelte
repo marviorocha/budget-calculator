@@ -1,14 +1,14 @@
 <script>
-  import { setContext } from "svelte";
+  import { setContext, onMount, afterUpdate } from "svelte";
   import Navbar from "./Navbar.svelte";
   import Title from "./Title.svelte";
-  import Total from "./Total.svelte";
+  import Totals from "./Total.svelte";
   import ExpenseList from "./ExpenseList.svelte";
   import ExpenseDate from "./expenses";
   import ExpenseForm from "./ExpenseForm.svelte";
-
+  import Modal from "./Modal.svelte";
   // variable
-  let expenses = [...ExpenseDate];
+  let expenses = [];
   let isShowForm = false;
 
   // Variable Editing
@@ -17,8 +17,9 @@
   export let setAmount = null;
   // reactive
   $: isEditing = setId ? true : false;
-  $: total = expenses.reduce((acumulate, curr) => {
-    return (acumulate += curr.amount);
+
+  $: total = expenses.reduce((acc, curr) => {
+    return (acc += JSON.parse(curr.amount));
   }, 0);
 
   // Show form
@@ -79,21 +80,39 @@
 
   setContext("state", state);
   setContext("modify", modifiedExpense);
+
+  //  Set localStorage
+
+  const setlocalStorage = () => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  };
+
+  onMount(() => {
+    expenses = localStorage.getItem("expenses")
+      ? JSON.parse(localStorage.getItem("expenses"))
+      : [];
+  });
+
+  afterUpdate(() => {
+    setlocalStorage();
+  });
 </script>
 
 <Navbar {formOpen} />
 <main class="container  mx-auto px-32 mt-5">
   {#if isShowForm}
-    <ExpenseForm
-      {addExpense}
-      {editExpense}
-      title={setName}
-      amount={setAmount}
-      {isEditing}
-      {formClose}
-    />
+    <Modal>
+      <ExpenseForm
+        {addExpense}
+        {editExpense}
+        title={setName}
+        amount={setAmount}
+        {isEditing}
+        {formClose}
+      />
+    </Modal>
   {/if}
-  <Total {total} />
+  <Totals {total} />
 
   <Title title="Add Expense" />
 
