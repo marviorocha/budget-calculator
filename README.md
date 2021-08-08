@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/8f17a573-8663-42ac-9337-4c65868fa674/deploy-status)](https://app.netlify.com/sites/budget-marvio/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/f3bfef97-0414-4404-a762-cf7366e160d0/deploy-status)](https://app.netlify.com/sites/budget-marvio/deploys)
 
 # Budget Calculator is Svelte App Tutorial from Udemy Curse
 
