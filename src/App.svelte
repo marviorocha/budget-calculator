@@ -1,5 +1,6 @@
 <script>
   import { setContext, onMount, afterUpdate } from "svelte";
+  import Github from "./Github.svelte";
   import Navbar from "./Navbar.svelte";
   import Title from "./Title.svelte";
   import Totals from "./Total.svelte";
@@ -100,7 +101,8 @@
 
 <Navbar {formOpen} />
 <main class="container  mx-auto px-32 mt-5">
-  {#if isShowForm}
+  <Github />
+  <!-- {#if isShowForm}
     <Modal>
       <ExpenseForm
         {addExpense}
@@ -124,7 +126,7 @@
       class="w-2/4  py-2 rounded-md  blue bg-blue-500 hover:bg-blue-800 transition delay-200  text-white my-3"
       >Clear all expense</button
     >
-  </div>
+  </div> -->
 </main>
 
 <style global>
