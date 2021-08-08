@@ -1,8 +1,11 @@
 <script>
+  import { fly, blur, fade } from "svelte/transition";
 </script>
 
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div
+  in:blur
+  out:fade
   class="fixed z-10 inset-0 overflow-y-auto"
   aria-labelledby="modal-title"
   role="dialog"
@@ -54,7 +57,7 @@
             >
               <slot name="title" />
             </h3>
-            <div class="mt-2">
+            <div transition:fly={{ y: 200 }} class="mt-2">
               <p class="text-sm text-gray-500">
                 <slot />
               </p>
